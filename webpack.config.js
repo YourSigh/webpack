@@ -1,4 +1,5 @@
 // Node.js的核心模块，专门用来处理文件路径
+const ESLintWebpackPlugin = require("eslint-webpack-plugin");
 const path = require("path");
 
 module.exports = {
@@ -47,7 +48,13 @@ module.exports = {
     ],
   },
   // 插件
-  plugins: [],
+  plugins: [
+    new ESLintWebpackPlugin({
+      // 检测哪些文件
+      context: path.resolve(__dirname, "src"),
+    })
+  ],
   // 模式
   mode: "development", // 开发模式
+  performance: false, // 关闭性能分析
 };
