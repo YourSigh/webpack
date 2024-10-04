@@ -63,4 +63,9 @@ module.exports = {
   // 模式
   mode: "development", // 开发模式
   performance: false, // 关闭性能分析
+  devServer: {
+    host: "localhost",
+    port: "3000",
+    open: true,
+  }
 };
