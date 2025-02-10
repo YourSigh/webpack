@@ -22,7 +22,7 @@ module.exports = {
     rules: [
       {
         test: /\.css$/, // 匹配css文件的正则表达式
-        use: ["style-loader", "css-loader"], // 执行顺序是从右往左执行 css-loader 再执行 style-loader
+        use: ["style-loader", "css-loader"], // 执行顺序是从右往左执行 先 css-loader 再执行 style-loader
       },
       {
         test: /\.(png|jpg|JPG|gif)$/, // 匹配图片文件的正则表达式
@@ -65,7 +65,7 @@ module.exports = {
   performance: false, // 关闭性能分析
   devServer: {
     host: "localhost",
-    port: "3000",
+    port: "3001",
     open: true,
   }
 };
