@@ -1,6 +1,8 @@
 // Node.js的核心模块，专门用来处理文件路径
 const ESLintWebpackPlugin = require("eslint-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { VueLoaderPlugin } = require('vue-loader');
 const path = require("path");
 
 module.exports = {
@@ -45,6 +47,10 @@ module.exports = {
         generator: { // 输出字体文件的名称
           filename: "fonts/[name].[hash:6][ext]",
         }
+      },
+      {
+        test: /\.vue$/, // 匹配vue文件的正则表达式
+        use: "vue-loader",  
       }
     ],
   },
@@ -59,6 +65,8 @@ module.exports = {
       // 新的html文件有两个特点：1. 内容和源文件一致 2. 自动引入打包生成的js等资源
       template: path.resolve(__dirname, "public/index.html"),
     }),
+    new BundleAnalyzerPlugin(),
+    new VueLoaderPlugin(),
   ],
   // 模式
   mode: "development", // 开发模式
