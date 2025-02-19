@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx webpack-dev-server"
+    "dev": "npx webpack-dev-server",
+    "build": "npx webpack --mode production",
+    "build-dev": "npx webpack --mode development"
   },
   "author": "",
   "license": "ISC",
@@ -23,5 +25,8 @@
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.1.0"
   },
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
 }

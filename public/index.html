@@ -5,11 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="../src/main.js"></script>
+    <style>
+        .content {
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            /* flex-direction: column; */
+        }
+        .b1, .b2 {
+            width: 100px;
+            height: 100px;
+        }
+        .b1 {
+            background-color: red;
+        }
+        .b2 {
+            background-color: blue;
+            align-self: center;
+        }
+    </style>
 </head>
 <body>
     <div id="app"></div>
     <div class="box"></div>
     <div class="box2"></div>
     <i class="iconfont icon-shezhi"></i>
+    <div class="content">
+        <div class="b1"></div>
+        <div class="b2"></div>
+    </div>
 </body>
 </html>

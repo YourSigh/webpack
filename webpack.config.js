@@ -8,7 +8,17 @@ const path = require("path");
 module.exports = {
   // 入口
   // 相对路径和绝对路径都行
-  entry: "./src/main.js",
+  entry: { // 多入口
+    index: {
+      import: './src/main.js',
+      dependOn: 'shared',
+    },
+    another: {
+      import: './src/another.js',
+      dependOn: 'shared',
+    },
+    shared: 'lodash',
+  },
   // 输出
   output: {
     // path: 文件输出目录，必须是绝对路径
@@ -16,7 +26,7 @@ module.exports = {
     // __dirname 当前文件的文件夹绝对路径
     path: path.resolve(__dirname, "dist"),
     // filename: 输出文件名
-    filename: "main.js",
+    filename: '[name].[contenthash].bundle.js',
     clean: true, // 自动清空上次打包内容
   },
   // 加载器 
@@ -65,7 +75,11 @@ module.exports = {
       // 新的html文件有两个特点：1. 内容和源文件一致 2. 自动引入打包生成的js等资源
       template: path.resolve(__dirname, "public/index.html"),
     }),
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin({
+      // 打包后文件分析插件
+      openAnalyzer: false, // 设置为 false 不自动打开浏览器
+      analyzerPort: 8888, // 端口号，默认是8888
+    }),
     new VueLoaderPlugin(),
   ],
   // 模式
@@ -75,5 +89,19 @@ module.exports = {
     host: "localhost",
     port: "3001",
     open: true,
-  }
+  },
+  optimization: {
+    moduleIds: 'deterministic', // 生成稳定的模块 ID，确保即使模块内容不变，ID 也不会改变
+    runtimeChunk: 'single', // 将运行时代码提取到一个单独的 runtime.bundle.js 文件中
+    splitChunks: {
+      chunks: 'all', // 自动提取和分割代码中的公共部分到单独的 shared.bundle.js 或 vendors.bundle.js 中
+      cacheGroups: { // 定义如何对模块进行分组和缓存
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
 };
