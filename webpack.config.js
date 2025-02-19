@@ -78,7 +78,7 @@ module.exports = {
     new BundleAnalyzerPlugin({
       // 打包后文件分析插件
       openAnalyzer: false, // 设置为 false 不自动打开浏览器
-      analyzerPort: 8888, // 端口号，默认是8888
+      analyzerPort: 6666, // 端口号，默认是8888
     }),
     new VueLoaderPlugin(),
   ],
