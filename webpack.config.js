@@ -1,6 +1,7 @@
 // Node.js的核心模块，专门用来处理文件路径
 const ESLintWebpackPlugin = require("eslint-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { VueLoaderPlugin } = require('vue-loader');
 const path = require("path");
@@ -33,34 +34,39 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/, // 匹配css文件的正则表达式
-        use: ["style-loader", "css-loader"], // 执行顺序是从右往左执行 先 css-loader 再执行 style-loader
-      },
-      {
-        test: /\.(png|jpg|JPG|gif)$/, // 匹配图片文件的正则表达式
-        type: "asset", // 类型是asset
-        // 解析器
-        parser: {
-          dataUrlCondition: { // 小于8kb的图片会被base64处理
-            maxSize: 8 * 1024,
-          }
-        },
-        generator: { // 输出图片文件的名称
-          // [name] 取文件名 [ext] 取文件扩展名
-          // [hash:6] 取图片的hash值的前6位
-          filename: "images/[name].[hash:6][ext]",
-        }
-      },
-      {
-        test: /\.(eot|ttf|woff2?)$/, // 匹配字体文件的正则表达式
-        type: "asset/resource", // 类型是asset/resource
-        generator: { // 输出字体文件的名称
-          filename: "fonts/[name].[hash:6][ext]",
-        }
-      },
-      {
-        test: /\.vue$/, // 匹配vue文件的正则表达式
-        use: "vue-loader",  
+        // 单次匹配的文件
+        oneOf: [
+          {
+            test: /\.css$/, // 匹配css文件的正则表达式
+            use: [MiniCssExtractPlugin.loader, "css-loader"], // 执行顺序是从右往左执行 先 css-loader 再执行 style-loader
+          },
+          {
+            test: /\.(png|jpg|JPG|gif)$/, // 匹配图片文件的正则表达式
+            type: "asset", // 类型是asset
+            // 解析器
+            parser: {
+              dataUrlCondition: { // 小于8kb的图片会被base64处理
+                maxSize: 8 * 1024,
+              }
+            },
+            generator: { // 输出图片文件的名称
+              // [name] 取文件名 [ext] 取文件扩展名
+              // [hash:6] 取图片的hash值的前6位
+              filename: "images/[name].[hash:6][ext]",
+            }
+          },
+          {
+            test: /\.(eot|ttf|woff2?)$/, // 匹配字体文件的正则表达式
+            type: "asset/resource", // 类型是asset/resource
+            generator: { // 输出字体文件的名称
+              filename: "fonts/[name].[hash:6][ext]",
+            }
+          },
+          {
+            test: /\.vue$/, // 匹配vue文件的正则表达式
+            use: "vue-loader",  
+          },
+        ]
       }
     ],
   },
@@ -81,6 +87,10 @@ module.exports = {
       analyzerPort: 6666, // 端口号，默认是8888
     }),
     new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({
+      // 输出的css文件名
+      filename: "css/[name].[contenthash].css",
+    }),
   ],
   // 模式
   mode: "development", // 开发模式
@@ -89,6 +99,7 @@ module.exports = {
     host: "localhost",
     port: "3001",
     open: true,
+    hot: true, // 开启热更新
   },
   optimization: {
     moduleIds: 'deterministic', // 生成稳定的模块 ID，确保即使模块内容不变，ID 也不会改变
@@ -104,4 +115,5 @@ module.exports = {
       },
     },
   },
+  devtool: 'source-map', // 生成 source map 文件
 };
