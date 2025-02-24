@@ -1,10 +1,16 @@
+const os = require("os");
 // Node.js的核心模块，专门用来处理文件路径
 const ESLintWebpackPlugin = require("eslint-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { VueLoaderPlugin } = require('vue-loader');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const path = require("path");
+
+// cpu核数
+const threads = os.cpus().length;
 
 module.exports = {
   // 入口
@@ -63,23 +69,31 @@ module.exports = {
             }
           },
           {
-            test: /\.vue$/, // 匹配vue文件的正则表达式
-            use: "vue-loader",  
-          },
-          {
             test: /\.js$/, // 匹配js文件的正则表达式
             include: path.resolve(__dirname, "src"), // 只处理src目录下的文件
-            use: {
-              loader: "babel-loader",
-              options: {
-                cacheDirectory: true, // 开启babel编译缓存
-                cacheCompression: false, // 关闭缓存文件压缩
-                // plugins: ["@babel/plugin-transform-runtime"], // 减少代码体积
+            use: [
+              {
+                loader: "thread-loader", // 开启多进程
+                options: {
+                  workers: threads, // 数量
+                }
               },
-            },
+              {
+                loader: "babel-loader",
+                options: {
+                  cacheDirectory: true, // 开启babel编译缓存
+                  cacheCompression: false, // 关闭缓存文件压缩
+                  // plugins: ["@babel/plugin-transform-runtime"], // 减少代码体积
+                },
+              },
+            ]
           }
         ]
-      }
+      },
+      {
+        test: /\.vue$/, // 匹配vue文件的正则表达式
+        use: "vue-loader",  
+      },
     ],
   },
   // 插件
@@ -89,6 +103,7 @@ module.exports = {
       context: path.resolve(__dirname, "src"),
       cache: true, // 开启缓存
       cacheLocation: path.resolve(__dirname, "node_modules/.cache/eslintcache"), // 缓存目录
+      threads, // 开启多进程和设置进程数量 
     }),
     new HtmlWebpackPlugin({
       // 以public/index.html为模板创建文件
@@ -128,6 +143,12 @@ module.exports = {
         },
       },
     },
+    minimizer: [
+      new CssMinimizerPlugin(), // 压缩 CSS
+      new TerserWebpackPlugin({
+        parallel: threads, // 开启多进程和设置进程数量
+      }),
+    ],
   },
   devtool: 'source-map', // 生成 source map 文件
 };
