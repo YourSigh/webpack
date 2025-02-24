@@ -66,6 +66,18 @@ module.exports = {
             test: /\.vue$/, // 匹配vue文件的正则表达式
             use: "vue-loader",  
           },
+          {
+            test: /\.js$/, // 匹配js文件的正则表达式
+            include: path.resolve(__dirname, "src"), // 只处理src目录下的文件
+            use: {
+              loader: "babel-loader",
+              options: {
+                cacheDirectory: true, // 开启babel编译缓存
+                cacheCompression: false, // 关闭缓存文件压缩
+                // plugins: ["@babel/plugin-transform-runtime"], // 减少代码体积
+              },
+            },
+          }
         ]
       }
     ],
@@ -75,6 +87,8 @@ module.exports = {
     new ESLintWebpackPlugin({
       // 检测哪些文件
       context: path.resolve(__dirname, "src"),
+      cache: true, // 开启缓存
+      cacheLocation: path.resolve(__dirname, "node_modules/.cache/eslintcache"), // 缓存目录
     }),
     new HtmlWebpackPlugin({
       // 以public/index.html为模板创建文件
