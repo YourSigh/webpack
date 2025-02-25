@@ -7,6 +7,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { VueLoaderPlugin } = require('vue-loader');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const path = require("path");
 
 // cpu核数
@@ -83,7 +84,7 @@ module.exports = {
                 options: {
                   cacheDirectory: true, // 开启babel编译缓存
                   cacheCompression: false, // 关闭缓存文件压缩
-                  // plugins: ["@babel/plugin-transform-runtime"], // 减少代码体积
+                  plugins: ["@babel/plugin-transform-runtime"], // 减少代码体积
                 },
               },
             ]
@@ -148,6 +149,33 @@ module.exports = {
       new TerserWebpackPlugin({
         parallel: threads, // 开启多进程和设置进程数量
       }),
+      new ImageMinimizerPlugin({ // 压缩图片
+        minimizer: {
+          implementation: ImageMinimizerPlugin.imageminMinify,
+          options: {
+            plugins: [
+              ["gifsicle", { interlaced: true }], // 压缩 GIF 图片
+              ["jpegtran", { progressive: true }], // 压缩 JPEG 图片
+              ["optipng", { optimizationLevel: 5 }], // 压缩 PNG 图片
+              [
+                "svgo", // 压缩 SVG 图片
+                {
+                  plugins: [
+                    "preset-default", // 使用默认插件
+                    "prefixIds", // 添加前缀
+                    {
+                      name: "sortAttrs", // 排序属性
+                      params: {
+                        xmlnsOrder: "alphabetical", // 按属性名排序
+                      },
+                    },
+                  ],
+                },
+              ]
+            ]
+          }
+        }
+      })
     ],
   },
   devtool: 'source-map', // 生成 source map 文件
