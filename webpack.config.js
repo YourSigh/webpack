@@ -154,11 +154,11 @@ module.exports = {
           implementation: ImageMinimizerPlugin.imageminMinify,
           options: {
             plugins: [
-              ["gifsicle", { interlaced: true }], // 压缩 GIF 图片
-              ["jpegtran", { progressive: true }], // 压缩 JPEG 图片
-              ["optipng", { optimizationLevel: 5 }], // 压缩 PNG 图片
+              ["imagemin-gifsicle", { interlaced: true }], // 压缩 GIF 图片
+              ["imagemin-jpegtran", { progressive: true }], // 压缩 JPEG 图片
+              ["imagemin-optipng", { optimizationLevel: 5 }], // 压缩 PNG 图片
               [
-                "svgo", // 压缩 SVG 图片
+                "imagemin-svgo", // 压缩 SVG 图片
                 {
                   plugins: [
                     "preset-default", // 使用默认插件

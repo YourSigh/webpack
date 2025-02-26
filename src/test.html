@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片遮罩切换效果</title>
+    <style>
+        html {
+            overflow: hidden;
+        }
+
+        body {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            width: 660px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .base-image {
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .overlay-image {
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            z-index: 3;
+            animation: fadeInImage 4s ease-in-out forwards;
+        }
+
+        @keyframes fadeInImage {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .test {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: -660px;
+            width: 660px;
+            height: 860px;
+            background-color: #000;
+            z-index: 2;
+            opacity: 1;
+            animation: slideMask 3s ease-in-out forwards;
+        }
+
+        @keyframes slideMask {
+            0% {
+                right: -660px;
+            }
+
+            100% {
+                right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <img alt="第一张图"
+        src="https://lf3-static.bytednsdoc.com/obj/eden-cn/vhojeh7vhojnuvz/临时/Snipaste_2025-02-25_15-44-46.png"
+        class="base-image" />
+    <div class="test"></div>
+    <img alt="第二张图"
+        src="https://lf3-static.bytednsdoc.com/obj/eden-cn/vhojeh7vhojnuvz/临时/Snipaste_2025-02-25_15-45-08.png"
+        class="overlay-image" />
+</body>
+
+</html>
