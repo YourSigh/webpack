@@ -9,6 +9,14 @@ console.log(sum(1, 2));
 import Vue from 'vue';
 import App from './App.vue';
 
+document.getElementById('btn').onclick = () => {
+  import(/* webpackChunkName: "count" */ './js/count').then(({ default: count }) => {
+    console.log(count(1));
+  }).catch((err) => {
+    console.log(err);
+  });
+}
+
 new Vue({
   render: h => h(App),
 }).$mount('#app');

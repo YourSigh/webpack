@@ -19,13 +19,13 @@ module.exports = {
   entry: { // 多入口
     index: {
       import: './src/main.js',
-      dependOn: 'shared',
+      dependOn: 'shared', // 依赖于shared
     },
     another: {
       import: './src/another.js',
-      dependOn: 'shared',
+      dependOn: 'shared', // 依赖于shared
     },
-    shared: 'lodash',
+    shared: 'lodash', // 共享的模块
   },
   // 输出
   output: {
@@ -34,8 +34,10 @@ module.exports = {
     // __dirname 当前文件的文件夹绝对路径
     path: path.resolve(__dirname, "dist"),
     // filename: 输出文件名
-    filename: '[name].[contenthash].bundle.js',
+    filename: 'js/[name].[contenthash].bundle.js',
     clean: true, // 自动清空上次打包内容
+    chunkFilename: 'js/[name].[contenthash].chunk.js', // 输出的chunk文件名
+    assetModuleFilename: 'assets/[name].[contenthash][ext]', // 输出的资源文件名
   },
   // 加载器 
   module: {
@@ -120,6 +122,7 @@ module.exports = {
     new MiniCssExtractPlugin({
       // 输出的css文件名
       filename: "css/[name].[contenthash].css",
+      chunkFilename: "css/[name].[contenthash].chunk.css",
     }),
   ],
   // 模式
@@ -142,6 +145,12 @@ module.exports = {
           name: 'vendors',
           chunks: 'all',
         },
+        default: { // 其他模块
+          minSize: 0, // 最小大小为0，即所有模块都符合条件
+          minChunks: 2, // 最小引用次数为2，即至少被引用两次的模块才会被提取
+          priority: -20, // 优先级为-20，即比其他缓存组的优先级更低
+          reuseExistingChunk: true, // 重用已存在的块，即如果已经存在一个与当前模块匹配的块，则不会创建新的块
+        },
       },
     },
     minimizer: [
@@ -149,33 +158,33 @@ module.exports = {
       new TerserWebpackPlugin({
         parallel: threads, // 开启多进程和设置进程数量
       }),
-      new ImageMinimizerPlugin({ // 压缩图片
-        minimizer: {
-          implementation: ImageMinimizerPlugin.imageminMinify,
-          options: {
-            plugins: [
-              ["imagemin-gifsicle", { interlaced: true }], // 压缩 GIF 图片
-              ["imagemin-jpegtran", { progressive: true }], // 压缩 JPEG 图片
-              ["imagemin-optipng", { optimizationLevel: 5 }], // 压缩 PNG 图片
-              [
-                "imagemin-svgo", // 压缩 SVG 图片
-                {
-                  plugins: [
-                    "preset-default", // 使用默认插件
-                    "prefixIds", // 添加前缀
-                    {
-                      name: "sortAttrs", // 排序属性
-                      params: {
-                        xmlnsOrder: "alphabetical", // 按属性名排序
-                      },
-                    },
-                  ],
-                },
-              ]
-            ]
-          }
-        }
-      })
+      // new ImageMinimizerPlugin({ // 压缩图片
+      //   minimizer: {
+      //     implementation: ImageMinimizerPlugin.imageminMinify,
+      //     options: {
+      //       plugins: [
+      //         ["imagemin-gifsicle", { interlaced: true }], // 压缩 GIF 图片
+      //         ["imagemin-jpegtran", { progressive: true }], // 压缩 JPEG 图片
+      //         ["imagemin-optipng", { optimizationLevel: 5 }], // 压缩 PNG 图片
+      //         [
+      //           "imagemin-svgo", // 压缩 SVG 图片
+      //           {
+      //             plugins: [
+      //               "preset-default", // 使用默认插件
+      //               "prefixIds", // 添加前缀
+      //               {
+      //                 name: "sortAttrs", // 排序属性
+      //                 params: {
+      //                   xmlnsOrder: "alphabetical", // 按属性名排序
+      //                 },
+      //               },
+      //             ],
+      //           },
+      //         ]
+      //       ]
+      //     }
+      //   }
+      // })
     ],
   },
   devtool: 'source-map', // 生成 source map 文件
