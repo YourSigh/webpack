@@ -136,7 +136,9 @@ module.exports = {
   },
   optimization: {
     moduleIds: 'deterministic', // 生成稳定的模块 ID，确保即使模块内容不变，ID 也不会改变
-    runtimeChunk: 'single', // 将运行时代码提取到一个单独的 runtime.bundle.js 文件中
+    runtimeChunk: { // 生成运行时代码块, 用于管理模块的加载和执行
+      name: (entrypoint) => `runtime~${entrypoint.name}`,
+    },
     splitChunks: {
       chunks: 'all', // 自动提取和分割代码中的公共部分到单独的 shared.bundle.js 或 vendors.bundle.js 中
       cacheGroups: { // 定义如何对模块进行分组和缓存
