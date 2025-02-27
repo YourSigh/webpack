@@ -8,6 +8,7 @@ const { VueLoaderPlugin } = require('vue-loader');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const WorkBoxPlugin = require('workbox-webpack-plugin');
 const path = require("path");
 
 // cpu核数
@@ -124,6 +125,12 @@ module.exports = {
       filename: "css/[name].[contenthash].css",
       chunkFilename: "css/[name].[contenthash].chunk.css",
     }),
+    new WorkBoxPlugin.GenerateSW({
+      // 这些选项帮助快速启用 ServiceWorkers
+      // 不允许遗留任何“旧的” ServiceWorkers
+      clientsClaim: true,
+      skipWaiting: true,
+    })
   ],
   // 模式
   mode: "development", // 开发模式
