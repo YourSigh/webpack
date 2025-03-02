@@ -48,7 +48,11 @@ module.exports = {
         oneOf: [
           {
             test: /\.css$/, // 匹配css文件的正则表达式
-            use: [MiniCssExtractPlugin.loader, "css-loader"], // 执行顺序是从右往左执行 先 css-loader 再执行 style-loader
+            use: [ // 执行顺序是从右往左执行 先 css-loader 再执行 style-loader
+              "vue-style-loader", // 处理vue文件中的style标签
+              MiniCssExtractPlugin.loader, // 提取css成单独文件
+              "css-loader" // 处理css文件
+            ],
           },
           {
             test: /\.(png|jpg|JPG|gif)$/, // 匹配图片文件的正则表达式
@@ -88,6 +92,7 @@ module.exports = {
                   cacheDirectory: true, // 开启babel编译缓存
                   cacheCompression: false, // 关闭缓存文件压缩
                   plugins: ["@babel/plugin-transform-runtime"], // 减少代码体积
+                  presets: ['@babel/preset-env'], // 预设：转码规则（用bable开发环境本来预设的）
                 },
               },
             ]
@@ -195,6 +200,13 @@ module.exports = {
       //   }
       // })
     ],
+  },
+  resolve: {
+    extensions: ['.js', '.json', '.vue', '.ts', '.jsx', '.tsx', '.scss', '.css'], // 自动补全文件扩展名
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'], // 解析模块的路径
+    alias: { // 别名
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   devtool: 'source-map', // 生成 source map 文件
 };
