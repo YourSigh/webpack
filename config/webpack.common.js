@@ -50,7 +50,7 @@ module.exports = {
             test: /\.css$/, // 匹配css文件的正则表达式
             use: [ // 执行顺序是从右往左执行 先 css-loader 再执行 style-loader
               "vue-style-loader", // 处理vue文件中的style标签
-              MiniCssExtractPlugin.loader, // 提取css成单独文件
+              // MiniCssExtractPlugin.loader, // 提取css成单独文件
               "css-loader" // 处理css文件
             ],
           },
@@ -102,6 +102,12 @@ module.exports = {
       {
         test: /\.vue$/, // 匹配vue文件的正则表达式
         use: "vue-loader",  
+        options: {
+          compilerOptions: {
+            preserveWhitespace: false, // 去除空格
+          },
+          cacheDirectory: path.resolve(__dirname, "../node_modules/.cache/vue-loader"), // 缓存目录
+        }
       },
     ],
   },
@@ -135,6 +141,7 @@ module.exports = {
       // 不允许遗留任何“旧的” ServiceWorkers
       clientsClaim: true,
       skipWaiting: true,
+      maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 设置为 5 MB
     })
   ],
   // 模式
@@ -157,6 +164,11 @@ module.exports = {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
+          chunks: 'all',
+        },
+        vue: { // 提取vue相关的模块
+          test: /[\\/]node_modules[\\/]vue[\\/]/,
+          name: 'vue',
           chunks: 'all',
         },
         default: { // 其他模块
