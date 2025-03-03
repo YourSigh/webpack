@@ -78,8 +78,9 @@ module.exports = {
           },
           {
             test: /\.js$/, // 匹配js文件的正则表达式
-            include: path.resolve(__dirname, "src"), // 只处理src目录下的文件
+            include: path.resolve(__dirname, "../src"), // 只处理src目录下的文件
             use: [
+              "loader1", // 自定义loader1
               {
                 loader: "thread-loader", // 开启多进程
                 options: {
@@ -95,19 +96,23 @@ module.exports = {
                   presets: ['@babel/preset-env'], // 预设：转码规则（用bable开发环境本来预设的）
                 },
               },
-            ]
+            ],
           }
         ]
       },
       {
         test: /\.vue$/, // 匹配vue文件的正则表达式
-        use: "vue-loader",  
-        options: {
-          compilerOptions: {
-            preserveWhitespace: false, // 去除空格
-          },
-          cacheDirectory: path.resolve(__dirname, "../node_modules/.cache/vue-loader"), // 缓存目录
-        }
+        use: [
+          {
+            loader: 'vue-loader', // 处理vue文件
+            options: {
+              compilerOptions: {
+                preserveWhitespace: false, // 去除空格
+              },
+              cacheDirectory: path.resolve(__dirname, "../node_modules/.cache/vue-loader"), // 缓存目录
+            }
+          }
+        ],
       },
     ],
   },
@@ -115,7 +120,7 @@ module.exports = {
   plugins: [
     new ESLintWebpackPlugin({
       // 检测哪些文件
-      context: path.resolve(__dirname, "src"),
+      context: path.resolve(__dirname, "../src"),
       cache: true, // 开启缓存
       cacheLocation: path.resolve(__dirname, "../node_modules/.cache/eslintcache"), // 缓存目录
       threads, // 开启多进程和设置进程数量 
@@ -215,10 +220,13 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.json', '.vue', '.ts', '.jsx', '.tsx', '.scss', '.css'], // 自动补全文件扩展名
-    modules: [path.resolve(__dirname, 'src'), 'node_modules'], // 解析模块的路径
+    modules: [path.resolve(__dirname, '../src'), 'node_modules'], // 解析模块的路径
     alias: { // 别名
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, '../src'),
     },
   },
   devtool: 'source-map', // 生成 source map 文件
+  resolveLoader: { // 解析 loader 的路径
+    modules: ['node_modules', path.resolve(__dirname, '../loaders')]
+  }
 };

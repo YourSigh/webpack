@@ -9,7 +9,7 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 2020, // 支持最新的ES语法
         sourceType: "module", // 支持ES模块
-        parser: "babel-eslint", // 使用babel-eslint解析器
+        parser: "@babel/eslint-parser", // 使用@babel/eslint-parser解析器
     },
     rules: {
         "no-console": "off", // 关闭控制台输出
