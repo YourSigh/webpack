@@ -80,7 +80,10 @@ module.exports = {
             test: /\.js$/, // 匹配js文件的正则表达式
             include: path.resolve(__dirname, "../src"), // 只处理src目录下的文件
             use: [
-              "loader1", // 自定义loader1
+              "sync-loader",
+              "async-loader",
+              "raw-loader",
+              "pitch-loader",
               {
                 loader: "thread-loader", // 开启多进程
                 options: {
