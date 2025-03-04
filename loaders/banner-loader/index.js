@@ -9,7 +9,6 @@ module.exports = function(content, map, meta) {
         /**
          * @author ${options.author}
          */
-    `
-    console.log(prefix + content);
+    `;
     return prefix + content;
 }
