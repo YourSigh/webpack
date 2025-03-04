@@ -1,6 +1,6 @@
-function test(r) {
-   var RegExp = /^(0|[1-9][0-9]{0,10})(\.[0-9]{1,2})?$/;
-   console.log(RegExp.test(r));
+function test(content) {
+   console.log(content.replace(/console\.log\([^)]*\);?/g, ''));
+   AQ1071
 }
 
-test('00001');
+test("console.log(console.log(xxxx)xxxxx)");

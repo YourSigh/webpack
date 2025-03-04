@@ -86,6 +86,12 @@ module.exports = {
               "pitch-loader",
               "clean-log-loader",
               {
+                loader: 'banner-loader',
+                options: {
+                  author: '绿桶',
+                }
+              },
+              {
                 loader: "thread-loader", // 开启多进程
                 options: {
                   workers: threads, // 数量
