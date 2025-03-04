@@ -1,7 +1,3 @@
-const axios = function () {
-  console.log("axios");
-};
-axios.prototype.test = '123';
+let content = 'export default function count(num) { console.log(num); return num + 1;}'
 
-let a = new axios();
-console.log(a.test);
+console.log(content.replace(/console\.log\(.*\);?/gm, ''));

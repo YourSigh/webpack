@@ -84,6 +84,7 @@ module.exports = {
               "async-loader",
               "raw-loader",
               "pitch-loader",
+              "clean-log-loader",
               {
                 loader: "thread-loader", // 开启多进程
                 options: {

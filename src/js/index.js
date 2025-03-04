@@ -7,5 +7,6 @@ var singleNumber = function(nums) {
     for (let i = 0; i < nums.length; i++) {
         res ^= nums[i];
     }
+    console.log(res);
     return res;
 };
