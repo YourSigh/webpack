@@ -1,6 +1,8 @@
-function test(content) {
-   console.log(content.replace(/console\.log\([^)]*\);?/g, ''));
-   AQ1071
+let a = {
+   val: {
+      val: 3
+   },
 }
 
-test("console.log(console.log(xxxx)xxxxx)");
+a.val.val = 4;
+console.log(b.val);

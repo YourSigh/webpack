@@ -55,8 +55,8 @@ module.exports = {
             ],
           },
           {
-            test: /\.(png|jpg|JPG|gif)$/, // 匹配图片文件的正则表达式
-            type: "asset", // 类型是asset
+            test: /\.(png|jpg|jpeg|JPG|gif)$/, // 匹配图片文件的正则表达式
+            type: "javascript/auto", // 阻止webpack对图片进行处理，只使用file-loader进行处理
             // 解析器
             parser: {
               dataUrlCondition: { // 小于8kb的图片会被base64处理
@@ -67,7 +67,10 @@ module.exports = {
               // [name] 取文件名 [ext] 取文件扩展名
               // [hash:6] 取图片的hash值的前6位
               filename: "images/[name].[hash:6][ext]",
-            }
+            },
+            use: [
+              "file-loader", // 处理图片文件
+            ],
           },
           {
             test: /\.(eot|ttf|woff2?)$/, // 匹配字体文件的正则表达式
