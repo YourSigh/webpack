@@ -49,7 +49,8 @@ module.exports = {
           {
             test: /\.css$/, // 匹配css文件的正则表达式
             use: [ // 执行顺序是从右往左执行 先 css-loader 再执行 style-loader
-              "vue-style-loader", // 处理vue文件中的style标签
+              // "vue-style-loader", // 处理vue文件中的style标签
+              "./loaders/style-loader", // 将css插入到DOM中
               // MiniCssExtractPlugin.loader, // 提取css成单独文件
               "css-loader" // 处理css文件
             ],
