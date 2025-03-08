@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx webpack-dev-server --config ./config/webpack.dev.js --mode development",
-    "build": "npx webpack --config ./config/webpack.prod.js --mode production"
+    "build": "npx webpack --config ./config/webpack.prod.js --mode production",
+    "debug": "node --inspect-brk ./node_modules/webpack-cli/bin/cli.js --config ./config/webpack.prod.js --mode production"
   },
   "author": "",
   "license": "ISC",

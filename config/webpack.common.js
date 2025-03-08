@@ -11,6 +11,8 @@ const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const WorkBoxPlugin = require('workbox-webpack-plugin');
 
 const TestPlugin = require('../plugins/test-plugin');
+const BannerWebpackPlugin = require('../plugins/banner-webpack-plugin');
+const CleanWebpackPlugin = require('../plugins/clean-webpack-plugin');
 
 const path = require("path");
 
@@ -39,7 +41,7 @@ module.exports = {
     path: path.resolve(__dirname, "../dist"),
     // filename: 输出文件名
     filename: 'js/[name].[contenthash].bundle.js',
-    clean: true, // 自动清空上次打包内容
+    // clean: true, // 自动清空上次打包内容
     chunkFilename: 'js/[name].[contenthash].chunk.js', // 输出的chunk文件名
     assetModuleFilename: 'assets/[name].[contenthash][ext]', // 输出的资源文件名
   },
@@ -165,7 +167,11 @@ module.exports = {
       skipWaiting: true,
       maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 设置为 5 MB
     }),
-    new TestPlugin()
+    new TestPlugin(),
+    new BannerWebpackPlugin({
+      author: '绿桶',
+    }),
+    new CleanWebpackPlugin(),
   ],
   // 模式
   mode: "development", // 开发模式
