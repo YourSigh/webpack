@@ -9,6 +9,9 @@ const TerserWebpackPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const WorkBoxPlugin = require('workbox-webpack-plugin');
+
+const TestPlugin = require('../plugins/test-plugin');
+
 const path = require("path");
 
 // cpu核数
@@ -161,7 +164,8 @@ module.exports = {
       clientsClaim: true,
       skipWaiting: true,
       maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 设置为 5 MB
-    })
+    }),
+    new TestPlugin()
   ],
   // 模式
   mode: "development", // 开发模式
