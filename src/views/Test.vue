@@ -1,6 +1,7 @@
 <template>
   <div class="test">
     <h1>{{ message }}</h1>
+    revert测试
   </div>
 </template>
 
